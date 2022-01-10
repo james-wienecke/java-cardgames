@@ -4,7 +4,7 @@ public class Blackjack {
         Deck deck1 = new Deck();
         deck1.shuffle();
         for (Card card : deck1.getCards()) {
-            System.out.println(String.format("%c%c", card.getSuitChar(), card.getValueAsChar()));
+            System.out.println(card.toString());
         }
 //        System.out.println("Deck 2 -- 4 deck shoe");
 //

@@ -51,4 +51,32 @@ public class Card {
                 return (char) (value + (byte) 48);
         }
     }
+
+    public String getValueAsString() {
+        String val = null;
+        switch(this.value) {
+            case 11:
+                return String.valueOf('J'); // Jack
+            case 12:
+                return String.valueOf('Q'); // Queen
+            case 13:
+                return String.valueOf('K'); // King
+            case 1:
+                return String.valueOf('A'); // Ace
+            case 0:
+                return "JOKER"; // joker
+            default:
+                return String.valueOf(value);
+        }
+    }
+
+    @Override
+    public String toString() {
+        String value, suit, suitName;
+        value = getValueAsString();
+        suit = String.format("%c", this.suit.getSuitChar());
+        suitName = this.suit.name();
+
+        return String.format("%2s %s %s", value, suit, suitName);
+    }
 }
