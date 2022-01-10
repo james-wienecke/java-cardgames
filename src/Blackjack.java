@@ -78,6 +78,7 @@ public class Blackjack {
     }
 
     public void win(int dealerScore, int playerScore) {
+        this.gameWon = true;
         if (dealerScore == 21 || playerScore == 21) {
             System.out.println("BLACKJACK");
         }

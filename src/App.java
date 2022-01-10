@@ -20,12 +20,32 @@ public class App {
             game.win(dealerSum, playerSum);
         }
 
+        System.out.println("House has:");
         for (Card card : game.getDealerCards()) {
             System.out.println(card.toString());
         }
 
 
+        Card initialDealPlayer1 = game.getDeck().draw().flipCard();
+        Card initialDealPlayer2 = game.getDeck().draw().flipCard();
 
+        game.getPlayerCards().add(initialDealPlayer1);
+        game.getPlayerCards().add(initialDealPlayer2);
+        playerSum = game.sumOfCards(game.getPlayerCards());
+
+        if (playerSum == 21) {
+            initialDealDealer2.flipCard();
+            game.win(dealerSum, playerSum);
+        }
+
+        System.out.println("You have:");
+        for (Card card : game.getPlayerCards()) {
+            System.out.println(card.toString());
+        }
+
+        while (game.isGameWon()) {
+            // play game!
+        }
 
     }
 }
