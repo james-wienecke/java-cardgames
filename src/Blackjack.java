@@ -90,4 +90,14 @@ public class Blackjack {
         }
     }
 
+    public void lose(int dealerScore, int playerScore) {
+        this.gameWon = false;
+        System.out.println("BUST");
+        if (dealerScore > playerScore && dealerScore > 21) {
+            System.out.println("PLAYER WINS!!!");
+        } else if (playerScore > dealerScore && playerScore > 21) {
+            System.out.println("HOSE WINS!!!");
+        }
+    }
+
 }

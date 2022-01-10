@@ -45,6 +45,26 @@ public class App {
 
         while (game.isGameWon()) {
             // play game!
+
+            if (playerSum < 17) {
+                // hit
+            } else if (playerSum >= 17) {
+                // stand
+            }
+            if (dealerSum < 17) {
+                // hit
+            } else if (dealerSum >= 17) {
+                // stand
+            }
+        }
+
+        dealerSum = game.sumOfCards(game.getDealerCards());
+        playerSum = game.sumOfCards(game.getPlayerCards());
+
+        if (dealerSum == 21 || playerSum == 21) {
+            game.win(dealerSum, playerSum);
+        } else if (dealerSum > 21 || playerSum > 21) {
+            game.lose(dealerSum, playerSum);
         }
 
     }
