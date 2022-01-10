@@ -1,9 +1,11 @@
 public class Card {
     private CardSuit suit;
     private byte value;
+    private boolean faceUp;
 
     public Card(byte suit, byte value) {
         this.value = value;
+        this.faceUp = false;
         switch (suit) {
             case 0:
                 this.suit = CardSuit.CLUBS;
@@ -70,12 +72,24 @@ public class Card {
         }
     }
 
+    public Card flipCard() {
+        this.faceUp = !this.faceUp;
+        return this;
+    }
+
     @Override
     public String toString() {
         String value, suit, suitName;
-        value = getValueAsString();
-        suit = String.format("%c", this.suit.getSuitChar());
-        suitName = this.suit.name();
+        if (this.faceUp) {
+            value = getValueAsString();
+            suit = String.format("%c", this.suit.getSuitChar());
+            suitName = this.suit.name();
+        } else {
+            value = "?";
+            suit = "?";
+            suitName = "FACEDOWN";
+        }
+
 
         return String.format("%2s %s %s", value, suit, suitName);
     }

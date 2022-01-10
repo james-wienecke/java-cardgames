@@ -4,9 +4,11 @@ import java.util.Random;
 
 public class Deck {
     private ArrayList<Card> cards;
+    private ArrayList<Card> drawCards;
 
     public Deck() {
         this.cards = new ArrayList<>();
+        this.drawCards = new ArrayList<>();
         fillDeck();
     }
 
@@ -48,4 +50,11 @@ public class Deck {
         this.cards = shuffled;
         return shuffled;
     }
+
+    public Card draw() {
+        Card drawn = this.cards.remove(0);
+        drawCards.add(drawn);
+        return drawn;
+    }
+
 }
