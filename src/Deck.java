@@ -1,23 +1,23 @@
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Deck {
-    private LinkedList<Card> cards;
+    private ArrayList<Card> cards;
 
     public Deck() {
-        this.cards = new LinkedList<>();
+        this.cards = new ArrayList<>();
         fillDeck();
     }
 
     public Deck(int shoeSize) {
-        this.cards = new LinkedList<>();
+        this.cards = new ArrayList<>();
         for (int i = 0; i < shoeSize; i++) {
             fillDeck();
         }
     }
 
-    public Deck(LinkedList<Card> cards) {
+    public Deck(ArrayList<Card> cards) {
         this.cards = cards;
     }
 
@@ -29,11 +29,11 @@ public class Deck {
         }
     }
 
-    public LinkedList<Card> getCards() {
+    public ArrayList<Card> getCards() {
         return this.cards;
     }
 
-    public LinkedList<Card> shuffle() {
+    public ArrayList<Card> shuffle() {
         Card[] buffer = this.cards.toArray(Card[]::new);
         Random r = new Random();
         for (int i = 0; i < buffer.length - 1; i++) {
@@ -42,7 +42,7 @@ public class Deck {
             buffer[index] = buffer[i];
             buffer[i] = c;
         }
-        LinkedList<Card> shuffled = new LinkedList<>();
+        ArrayList<Card> shuffled = new ArrayList<>();
         Collections.addAll(shuffled, buffer);
 
         this.cards = shuffled;
