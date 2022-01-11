@@ -96,7 +96,7 @@ public class Blackjack {
         if (dealerScore > playerScore && dealerScore > 21) {
             System.out.println("PLAYER WINS!!!");
         } else if (playerScore > dealerScore && playerScore > 21) {
-            System.out.println("HOSE WINS!!!");
+            System.out.println("HOUSE WINS!!!");
         }
     }
 
