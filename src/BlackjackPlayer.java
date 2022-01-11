@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.Locale;
 
 public abstract class BlackjackPlayer {
     private final Blackjack game;
@@ -9,7 +10,7 @@ public abstract class BlackjackPlayer {
 
     BlackjackPlayer(Blackjack game, String name) {
         this.game = game;
-        this.name = name;
+        this.name = name.toLowerCase(Locale.ROOT);
         this.score = 0;
         this.cards = new LinkedList<>();
     }
