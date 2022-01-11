@@ -1,3 +1,5 @@
+package cards;
+
 public class Card {
     private CardSuit suit;
     private byte value;
@@ -54,6 +56,27 @@ public class Card {
         }
     }
 
+    public int getValue(int sum) {
+        int val = sum;
+        switch (this.getValue()) {
+            case 11:
+            case 12:
+            case 13:
+                val += 10;
+                break;
+            case 1:
+                if (sum + 11 > 21) {
+                    val += 1;
+                } else {
+                    val += 11;
+                }
+                break;
+            default:
+                val += this.getValue();
+        }
+        return val;
+    }
+
     public String getValueAsString() {
         String val = null;
         switch(this.value) {
@@ -70,6 +93,10 @@ public class Card {
             default:
                 return String.valueOf(value);
         }
+    }
+
+    public boolean isFaceUp() {
+        return faceUp;
     }
 
     public Card flipCard() {

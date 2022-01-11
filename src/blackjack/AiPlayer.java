@@ -1,5 +1,7 @@
+package blackjack;
+
 public class AiPlayer extends BlackjackPlayer {
-    AiPlayer(BlackjackPlayer game) {
+    public AiPlayer(Blackjack game) {
         super(game, "dealer");
     }
 }
