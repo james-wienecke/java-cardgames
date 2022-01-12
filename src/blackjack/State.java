@@ -1,9 +1,10 @@
 package blackjack;
 
-public enum PlayerStates {
-    READY,
+public enum State {
+    SETUP,
     HIT,
     STAND,
     BUST,
     BLACKJACK,
+    SURRENDER,
 }

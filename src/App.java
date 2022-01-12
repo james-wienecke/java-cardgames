@@ -16,6 +16,9 @@ public class App {
         BlackjackPlayer dealer = new AiPlayer(game);
         BlackjackPlayer player = new HumanPlayer(game, "player");
 
+        game.addDealer(dealer);
+        game.addPlayer(player);
+
         game.play();
 
 

@@ -6,11 +6,11 @@ import java.util.LinkedList;
 import java.util.Locale;
 
 public abstract class BlackjackPlayer {
-    private final Blackjack game;
-    private final LinkedList<Card> cards;
-    private int score;
-    private boolean retired;
-    private state;
+    protected final Blackjack game;
+    protected final LinkedList<Card> cards;
+    protected int score;
+    protected boolean retired;
+    protected State state;
 
     private String name;
 
@@ -20,6 +20,7 @@ public abstract class BlackjackPlayer {
         this.score = 0;
         this.retired = false;
         this.cards = new LinkedList<>();
+        this.state = State.SETUP;
     }
 
     public LinkedList<Card> getCards() {
@@ -42,6 +43,27 @@ public abstract class BlackjackPlayer {
 
     public void flipLastCard() {
         this.cards.getLast().flipCard();
+    }
+
+    public void takeTurn() {
+        aiScoreLogic();
+        switch (this.state) {
+            case HIT:
+                this.drawCard();
+                break;
+            case STAND:
+                break;
+        }
+        this.calcScore(true);
+    }
+
+    protected void aiScoreLogic() {
+        if (this.calcScore(true) >= 17) {
+            this.state = State.STAND;
+            this.retired = true;
+        } else {
+            this.state = State.HIT;
+        }
     }
 
 //    public int sumOfCards(boolean faceUpOnly) {
@@ -69,6 +91,16 @@ public abstract class BlackjackPlayer {
                 this.score = card.getValue(this.score);
             }
         }
+        System.out.println(this.name + " score: " + this.score);
+        if (this.score > 21) {
+            this.state = State.BUST;
+            this.retired = true;
+            System.out.println(this.name + " BUSTS!");
+        } else if (this.score == 21) {
+            this.state = State.BLACKJACK;
+            this.retired = true;
+            System.out.println(this.name + " BLACKJACK!");
+        }
         return this.score;
     }
 
@@ -82,5 +114,13 @@ public abstract class BlackjackPlayer {
 
     public void setRetired(boolean retired) {
         this.retired = retired;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 }

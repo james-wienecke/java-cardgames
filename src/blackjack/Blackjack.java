@@ -11,16 +11,16 @@ public class Blackjack {
     private Deck deck;
     private BlackjackPlayer dealer;
     private ArrayList<BlackjackPlayer> players;
-//    private LinkedList<Card> dealerCards;
-//    private LinkedList<Card> playerCards;
+    private ArrayList<BlackjackPlayer> allPlayers;
+
 
     public Blackjack() {
         this.gameWon = false;
         this.gameOver = false;
         this.deck = new Deck();
         this.deck.shuffle();
-//        this.dealerCards = new LinkedList<>();
-//        this.playerCards = new LinkedList<>();
+        this.players = new ArrayList<>();
+        this.allPlayers = new ArrayList<>();
     }
 
     public boolean isGameWon() {
@@ -39,22 +39,6 @@ public class Blackjack {
         this.deck = deck;
     }
 
-//    public LinkedList<Card> getDealerCards() {
-//        return dealerCards;
-//    }
-
-//    public void setDealerCards(LinkedList<Card> dealerCards) {
-//        this.dealerCards = dealerCards;
-//    }
-
-//    public LinkedList<Card> getPlayerCards() {
-//        return playerCards;
-//    }
-
-//    public void setPlayerCards(LinkedList<Card> playerCards) {
-//        this.playerCards = playerCards;
-//    }
-
     public Card drawCard() {
         return this.deck.draw();
     }
@@ -69,36 +53,64 @@ public class Blackjack {
         this.dealer.drawCard();
         this.dealer.drawCard(false);
 
-        drawCardsForPlayers(2);
+        drawCardsForPlayers();
+
+        printCardStatus();
+
+        drawCardsForPlayers();
+        this.dealer.getCards().forEach(card -> { if (!card.isFaceUp()) card.flipCard(); } );
+        printCardStatus();
     }
 
     public void gameLoop() {
         do {
-            this.dealer.drawCard();
-            this.drawCardsForPlayers();
+            for (BlackjackPlayer player : allPlayers) {
+                player.takeTurn();
+            }
+            this.dealer.takeTurn();
+
             if (this.scoreThresholdReached()) {
                 this.gameOver = true;
             }
+            printCardStatus();
+
             // if all players & dealer are standing, end game
-        } while (!gameOver);
-
-    }
-
-    public boolean scoreThresholdReached(int scoreThreshold) {
-        boolean reached = false;
-        if (dealer.calcScore(true) >= 21) {
-            reached = true;
-            dealer.setRetired(true);
-        }
-        for (BlackjackPlayer player : players) {
-            if (player.calcScore(true) >= 21) {
-                reached = true;
-                player.setRetired(true);
+            if (allPlayers.stream().allMatch(p -> p.getState() == State.STAND)) {
+                gameOver = true;
             }
+        } while (!gameOver);
+        this.gameEnd();
+    }
+
+    private void printCardStatus() {
+        this.dealer.calcScore(true);
+        System.out.println("dealer");
+        for (Card card : dealer.getCards()) {
+            System.out.println(card.toString());
+        }
+        System.out.println("player");
+        for (Card card : players.get(0).getCards()) {
+            System.out.println(card.toString());
         }
 
-        return reached;
     }
+
+//    public boolean scoreThresholdReached(int scoreThreshold) {
+//        boolean reached = false;
+//        if (dealer.calcScore(true) >= 21) {
+//            reached = true;
+//        }
+//        for (BlackjackPlayer player : players) {
+//            if (player.calcScore(true) >= 21) {
+//                reached = true;
+//            }
+//        }
+//
+//        return reached;
+//    }
+public boolean scoreThresholdReached(int scoreThreshold) {
+    return allPlayers.stream().anyMatch(BlackjackPlayer::isRetired);
+}
 
     public boolean scoreThresholdReached() {
         return scoreThresholdReached(21);
@@ -110,8 +122,35 @@ public class Blackjack {
 //        } else if (dealerSum > 21 || playerSum > 21) {
 //            game.lose(dealerSum, playerSum);
 //        }
+//       if (dealer.getState() == State.BLACKJACK) {
+//           // dealer wins
+//       } else if (players.stream().anyMatch(p -> p.getState() == State.BLACKJACK)) {
+//           // player wins
+//       } else {
+//           if (de)
+//       }
+        ArrayList<BlackjackPlayer> winners = new ArrayList<>();
+        ArrayList<BlackjackPlayer> losers = new ArrayList<>();
 
-
+        switch (dealer.getState()) {
+            case BLACKJACK:
+                // dealer wins, all players lose
+                losers.addAll(players);
+                break;
+            case BUST:
+                // dealer loses, all players win
+                winners.addAll(players);
+                break;
+            case STAND:
+                // check which players are higher or lower than dealer's score
+                players.forEach(player -> {
+                    if (player.getScore() > dealer.getScore()) {
+                        winners.add(player);
+                    } else {
+                        losers.add(player);
+                    }
+                });
+        }
 
     }
 
@@ -150,4 +189,12 @@ public class Blackjack {
         }
     }
 
+    public void addDealer(BlackjackPlayer dealer) {
+        this.dealer = dealer;
+    }
+
+    public void addPlayer(BlackjackPlayer player) {
+        this.players.add(player);
+        this.allPlayers.add(player);
+    }
 }
