@@ -8,7 +8,7 @@ import java.util.Locale;
 public abstract class BlackjackPlayer {
     protected final Blackjack game;
     protected final LinkedList<Card> cards;
-    protected final LinkedList<Card> split;
+    protected LinkedList<Hand> hands;
     protected int score;
     protected boolean retired;
     protected State state;
@@ -21,7 +21,7 @@ public abstract class BlackjackPlayer {
         this.score = 0;
         this.retired = false;
         this.cards = new LinkedList<>();
-        this.split = new LinkedList<>();
+        this.hands = new LinkedList<>();
         this.state = State.SETUP;
     }
 
@@ -98,5 +98,17 @@ public abstract class BlackjackPlayer {
         this.getCards().forEach(System.out::println);
     }
 
+    class Hand {
+        LinkedList<Card> cards;
 
+        Hand() {
+            this.cards = new LinkedList<>();
+        }
+
+        public LinkedList<Card> getCards() {
+            return cards;
+        }
+
+
+    }
 }
