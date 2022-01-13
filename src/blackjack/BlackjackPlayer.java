@@ -23,6 +23,8 @@ public abstract class BlackjackPlayer {
         this.state = State.SETUP;
     }
 
+    public abstract void takeTurn();
+
     public LinkedList<Card> getCards() {
         return cards;
     }
@@ -43,33 +45,6 @@ public abstract class BlackjackPlayer {
 
     public void flipLastCard() {
         this.cards.getLast().flipCard();
-    }
-
-    public void takeTurn() {
-        aiScoreLogic();
-        System.out.println(this.getName() + " " + this.getState() + "s");
-        switch (this.state) {
-            case HIT:
-                this.drawCard();
-                break;
-            case STAND:
-                break;
-        }
-        this.printCardStatus();
-        System.out.println(this.getName() + " score: " + this.calcScore(true));
-        if (this.state == State.BLACKJACK || this.state == State.BUST) {
-            System.out.println(this.getName() + " " + this.state);
-        }
-    }
-
-
-    protected void aiScoreLogic() {
-        if (this.score >= 17) {
-            this.state = State.STAND;
-            this.retired = true;
-        } else {
-            this.state = State.HIT;
-        }
     }
 
     public int calcScore(boolean faceUpOnly) {
