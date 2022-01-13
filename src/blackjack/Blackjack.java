@@ -55,44 +55,45 @@ public class Blackjack {
 
         drawCardsForPlayers();
 
-        printCardStatus();
+        this.allPlayers.forEach(player -> {
+            player.printCardStatus();
+            System.out.println(player.getName() + " score: " + player.calcScore(true));
+        });
+
+        //printCardStatus();
 
         drawCardsForPlayers();
-        this.dealer.getCards().forEach(card -> { if (!card.isFaceUp()) card.flipCard(); } );
-        printCardStatus();
+
+        this.dealer.flipLastCard();
+
+        this.allPlayers.forEach(player -> {
+            player.printCardStatus();
+            System.out.println(player.getName() + " score: " + player.calcScore(true));
+        });
+        //printCardStatus();
     }
 
     public void gameLoop() {
         do {
-            for (BlackjackPlayer player : allPlayers) {
+            for (BlackjackPlayer player : players) {
                 player.takeTurn();
             }
-            this.dealer.takeTurn();
-
-            if (this.scoreThresholdReached()) {
-                this.gameOver = true;
-            }
-            printCardStatus();
+            dealer.takeTurn();
 
             // if all players & dealer are standing, end game
             if (allPlayers.stream().allMatch(p -> p.getState() == State.STAND)) {
-                gameOver = true;
+                this.gameOver = true;
             }
-        } while (!gameOver);
+        } while (!this.gameOver);
         this.gameEnd();
     }
 
+    @Deprecated
     private void printCardStatus() {
-        this.dealer.calcScore(true);
-        System.out.println("dealer");
-        for (Card card : dealer.getCards()) {
-            System.out.println(card.toString());
-        }
-        System.out.println("player");
-        for (Card card : players.get(0).getCards()) {
-            System.out.println(card.toString());
-        }
-
+        allPlayers.forEach(player -> {
+            System.out.println(player.getName());
+            player.getCards().forEach(System.out::println);
+        });
     }
 
 //    public boolean scoreThresholdReached(int scoreThreshold) {
@@ -109,7 +110,7 @@ public class Blackjack {
 //        return reached;
 //    }
 public boolean scoreThresholdReached(int scoreThreshold) {
-    return allPlayers.stream().anyMatch(BlackjackPlayer::isRetired);
+    return allPlayers.stream().anyMatch(player -> player.getScore() > scoreThreshold);
 }
 
     public boolean scoreThresholdReached() {
@@ -191,6 +192,7 @@ public boolean scoreThresholdReached(int scoreThreshold) {
 
     public void addDealer(BlackjackPlayer dealer) {
         this.dealer = dealer;
+        this.allPlayers.add(dealer);
     }
 
     public void addPlayer(BlackjackPlayer player) {

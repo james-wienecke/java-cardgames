@@ -21,7 +21,12 @@ public class HumanPlayer extends BlackjackPlayer {
                 this.retired = true;
                 break;
         }
-        this.calcScore(true);
+        this.printCardStatus();
+        if (!this.retired) {
+            System.out.println(this.getName() + " score: " + this.calcScore(true));
+        } else {
+            System.out.println(this.getName() + " score: " + this.getScore());
+        }
     }
 
     private void takeActionInput() {

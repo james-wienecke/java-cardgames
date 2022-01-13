@@ -4,10 +4,12 @@ public class Card {
     private CardSuit suit;
     private byte value;
     private boolean faceUp;
+    private boolean scored;
 
     public Card(byte suit, byte value) {
         this.value = value;
         this.faceUp = false;
+        this.scored = false;
         switch (suit) {
             case 0:
                 this.suit = CardSuit.CLUBS;
@@ -74,6 +76,7 @@ public class Card {
             default:
                 val += this.getValue();
         }
+        this.scored = true;
         return val;
     }
 
@@ -119,5 +122,9 @@ public class Card {
 
 
         return String.format("%2s %s %s", value, suit, suitName);
+    }
+
+    public boolean isAlreadyScored() {
+        return scored;
     }
 }

@@ -54,11 +54,13 @@ public abstract class BlackjackPlayer {
             case STAND:
                 break;
         }
-        this.calcScore(true);
+        this.printCardStatus();
+        System.out.println(this.getName() + " score: " + this.calcScore(true));
     }
 
+
     protected void aiScoreLogic() {
-        if (this.calcScore(true) >= 17) {
+        if (this.score >= 17) {
             this.state = State.STAND;
             this.retired = true;
         } else {
@@ -66,40 +68,28 @@ public abstract class BlackjackPlayer {
         }
     }
 
-//    public int sumOfCards(boolean faceUpOnly) {
-//        int sum = 0;
-//        for (Card card : this.cards) {
-//            if (faceUpOnly) {
-//                if (card.isFaceUp()) {
-//                    sum = card.getValue(sum);
-//                }
-//            } else {
-//                sum = card.getValue(sum);
-//            }
-//        }
-//        return sum;
-//    }
-
     public int calcScore(boolean faceUpOnly) {
+        //Card card = this.cards.getLast();
         for (Card card : this.cards) {
-            if (faceUpOnly) {
-                this.score = (card.isFaceUp()) ? card.getValue(this.score) : this.score;
-//                if (card.isFaceUp()) {
-//                    this.score = card.getValue(this.score);
-//                }
+            if (card.isAlreadyScored()) {
+                // skip scoring for card
             } else {
-                this.score = card.getValue(this.score);
+                if (faceUpOnly) {
+                    this.score = (card.isFaceUp()) ? card.getValue(this.score) : this.score;
+                } else {
+                    this.score = card.getValue(this.score);
+                }
             }
         }
-        System.out.println(this.name + " score: " + this.score);
+        //System.out.println(this.name + " score: " + this.score);
         if (this.score > 21) {
             this.state = State.BUST;
             this.retired = true;
-            System.out.println(this.name + " BUSTS!");
+            //System.out.println(this.name + " BUSTS!");
         } else if (this.score == 21) {
             this.state = State.BLACKJACK;
             this.retired = true;
-            System.out.println(this.name + " BLACKJACK!");
+            //System.out.println(this.name + " BLACKJACK!");
         }
         return this.score;
     }
@@ -122,5 +112,14 @@ public abstract class BlackjackPlayer {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void printCardStatus() {
+        System.out.println(this.getName());
+        this.getCards().forEach(System.out::println);
     }
 }
