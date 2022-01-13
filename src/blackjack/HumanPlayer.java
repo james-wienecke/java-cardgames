@@ -21,6 +21,7 @@ public class HumanPlayer extends BlackjackPlayer {
                 this.retired = true;
                 break;
         }
+        System.out.println(this.getName() + " " + this.getState() + "s");
         this.printCardStatus();
         if (!this.retired) {
             System.out.println(this.getName() + " score: " + this.calcScore(true));
@@ -30,16 +31,18 @@ public class HumanPlayer extends BlackjackPlayer {
     }
 
     private void takeActionInput() {
-        int input = in.getInt(1 , 2, "Enter your action for this round:\n" +
-                "(1) Hit\n" +
-                "(2) Stand");
-        switch (input) {
-            case 1:
-                this.state = State.HIT;
-                break;
-            case 2:
-                this.state = State.STAND;
-                break;
+        if (!this.retired) {
+            int input = in.getInt(1 , 2, "Enter your action for this round:\n" +
+                    "(1) Hit\n" +
+                    "(2) Stand");
+            switch (input) {
+                case 1:
+                    this.state = State.HIT;
+                    break;
+                case 2:
+                    this.state = State.STAND;
+                    break;
+            }
         }
     }
 }

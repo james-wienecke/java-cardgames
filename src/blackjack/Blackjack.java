@@ -60,8 +60,6 @@ public class Blackjack {
             System.out.println(player.getName() + " score: " + player.calcScore(true));
         });
 
-        //printCardStatus();
-
         drawCardsForPlayers();
 
         this.dealer.flipLastCard();
@@ -70,7 +68,6 @@ public class Blackjack {
             player.printCardStatus();
             System.out.println(player.getName() + " score: " + player.calcScore(true));
         });
-        //printCardStatus();
     }
 
     public void gameLoop() {
@@ -81,7 +78,10 @@ public class Blackjack {
             dealer.takeTurn();
 
             // if all players & dealer are standing, end game
-            if (allPlayers.stream().allMatch(p -> p.getState() == State.STAND)) {
+            if (allPlayers.stream().allMatch(p -> p.getState() == State.STAND ||
+                    p.getState() == State.BLACKJACK ||
+                    p.getState() == State.BUST ||
+                    p.getState() == State.SURRENDER)) {
                 this.gameOver = true;
             }
         } while (!this.gameOver);
@@ -118,18 +118,6 @@ public boolean scoreThresholdReached(int scoreThreshold) {
     }
 
     public void gameEnd() {
-        //        if (dealerSum == 21 || playerSum == 21) {
-//            game.win(dealerSum, playerSum);
-//        } else if (dealerSum > 21 || playerSum > 21) {
-//            game.lose(dealerSum, playerSum);
-//        }
-//       if (dealer.getState() == State.BLACKJACK) {
-//           // dealer wins
-//       } else if (players.stream().anyMatch(p -> p.getState() == State.BLACKJACK)) {
-//           // player wins
-//       } else {
-//           if (de)
-//       }
         ArrayList<BlackjackPlayer> winners = new ArrayList<>();
         ArrayList<BlackjackPlayer> losers = new ArrayList<>();
 
@@ -152,7 +140,8 @@ public boolean scoreThresholdReached(int scoreThreshold) {
                     }
                 });
         }
-
+        System.out.println("Winners: " + winners);
+        System.out.println("Losers: " + losers);
     }
 
     public void drawCardsForPlayers() {
@@ -161,32 +150,10 @@ public boolean scoreThresholdReached(int scoreThreshold) {
         }
     }
 
+    @Deprecated
     public void drawCardsForPlayers(int times) {
         for (int i = 0; i < times; i++) {
             drawCardsForPlayers();
-        }
-    }
-
-    public void win(int dealerScore, int playerScore) {
-        this.gameWon = true;
-        if (dealerScore == 21 || playerScore == 21) {
-            System.out.println("BLACKJACK");
-        }
-        if (dealerScore > playerScore) {
-            // dealer win
-            System.out.println("HOUSE WINS!!!");
-        } else {
-            System.out.println("PLAYER WINS!!!");
-        }
-    }
-
-    public void lose(int dealerScore, int playerScore) {
-        this.gameWon = false;
-        System.out.println("BUST");
-        if (dealerScore > playerScore && dealerScore > 21) {
-            System.out.println("PLAYER WINS!!!");
-        } else if (playerScore > dealerScore && playerScore > 21) {
-            System.out.println("HOUSE WINS!!!");
         }
     }
 

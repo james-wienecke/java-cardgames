@@ -47,6 +47,7 @@ public abstract class BlackjackPlayer {
 
     public void takeTurn() {
         aiScoreLogic();
+        System.out.println(this.getName() + " " + this.getState() + "s");
         switch (this.state) {
             case HIT:
                 this.drawCard();
