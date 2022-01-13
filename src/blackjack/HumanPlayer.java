@@ -11,6 +11,11 @@ public class HumanPlayer extends BlackjackPlayer {
     private Input in;
 
     @Override
+    public void makeDecision() {
+        takeActionInput();
+    }
+
+    @Override
     public void takeTurn() {
         takeActionInput();
         switch (this.state) {
@@ -24,7 +29,7 @@ public class HumanPlayer extends BlackjackPlayer {
         System.out.println(this.getName() + " " + this.getState() + "s");
         this.printCardStatus();
         if (!this.retired) {
-            System.out.println(this.getName() + " score: " + this.calcScore(true));
+            //System.out.println(this.getName() + " score: " + this.calcScore(true));
         } else {
             System.out.println(this.getName() + " score: " + this.getScore());
         }

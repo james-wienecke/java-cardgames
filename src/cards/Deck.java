@@ -59,4 +59,10 @@ public class Deck {
         return drawn;
     }
 
+    public Card draw(boolean faceUp) {
+        Card drawn = this.cards.remove(0);
+        drawCards.add(faceUp ? drawn.flipCard() : drawn);
+        return drawn;
+    }
+
 }

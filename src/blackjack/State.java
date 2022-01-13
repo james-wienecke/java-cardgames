@@ -7,4 +7,6 @@ public enum State {
     BUST,
     BLACKJACK,
     SURRENDER,
+    DOUBLEDOWN,
+    SPLIT
 }

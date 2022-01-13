@@ -12,7 +12,7 @@ public class App {
 
         // player setup
 
-        BlackjackPlayer dealer = new DealerAI(game);
+        DealerAI dealer = new DealerAI(game);
         BlackjackPlayer player = new HumanPlayer(game, "player");
 
         game.addDealer(dealer);
