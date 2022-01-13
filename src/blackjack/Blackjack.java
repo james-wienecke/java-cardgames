@@ -72,7 +72,7 @@ public class Blackjack {
 
     public void gameLoop() {
         do {
-            if (allPlayers.stream().anyMatch(p -> p.getState() == State.BLACKJACK)) {
+            if (allPlayers.stream().anyMatch(p -> p.getState() == State.BLACKJACK || p.getState() == State.BUST)) {
                 break;
             }
             for (BlackjackPlayer player : players) {
@@ -115,11 +115,13 @@ public class Blackjack {
         switch (dealer.getState()) {
             case BLACKJACK:
                 // dealer wins, all players lose
+                winners.add(dealer);
                 losers.addAll(players);
                 break;
             case BUST:
                 // dealer loses, all players win
                 winners.addAll(players);
+                losers.add(dealer);
                 break;
             default:
                 // check which players are higher or lower than dealer's score
@@ -135,8 +137,20 @@ public class Blackjack {
                     }
                 });
         }
-        System.out.println("Winners: " + winners);
-        System.out.println("Losers: " + losers);
+        gameEndPrintWinsAndLoss(winners, losers);
+    }
+
+    private void gameEndPrintWinsAndLoss(ArrayList<BlackjackPlayer> winners, ArrayList<BlackjackPlayer> losers) {
+        StringBuffer winSb = new StringBuffer("Winners: ");
+        for (BlackjackPlayer player : winners) {
+            winSb.append(player.getName()).append(' ');
+        }
+        StringBuffer loseSb = new StringBuffer("Losers: ");
+        for (BlackjackPlayer player : losers) {
+            loseSb.append(player.getName()).append(' ');
+        }
+        System.out.println(winSb);
+        System.out.println(loseSb);
     }
 
     public void drawCardsForPlayers() {

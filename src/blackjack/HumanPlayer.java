@@ -28,6 +28,7 @@ public class HumanPlayer extends BlackjackPlayer {
         } else {
             System.out.println(this.getName() + " score: " + this.getScore());
         }
+        in.waitForAnyLine("Press enter to continue.");
     }
 
     private void takeActionInput() {
@@ -41,6 +42,7 @@ public class HumanPlayer extends BlackjackPlayer {
                     break;
                 case 2:
                     this.state = State.STAND;
+                    this.retired = true;
                     break;
             }
         }
