@@ -1,7 +1,7 @@
 package blackjack;
 
-public class AiPlayer extends BlackjackPlayer {
-    public AiPlayer(Blackjack game) {
+public class DealerAI extends BlackjackPlayer {
+    public DealerAI(Blackjack game) {
         super(game, "dealer");
     }
 

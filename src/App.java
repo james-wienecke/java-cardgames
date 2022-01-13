@@ -1,8 +1,7 @@
-import blackjack.AiPlayer;
+import blackjack.DealerAI;
 import blackjack.Blackjack;
 import blackjack.BlackjackPlayer;
 import blackjack.HumanPlayer;
-import cards.Card;
 import util.Input;
 
 public class App {
@@ -13,7 +12,7 @@ public class App {
 
         // player setup
 
-        BlackjackPlayer dealer = new AiPlayer(game);
+        BlackjackPlayer dealer = new DealerAI(game);
         BlackjackPlayer player = new HumanPlayer(game, "player");
 
         game.addDealer(dealer);
