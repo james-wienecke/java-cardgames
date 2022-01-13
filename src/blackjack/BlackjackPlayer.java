@@ -2,7 +2,6 @@ package blackjack;
 
 import cards.Card;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Locale;
 
@@ -10,16 +9,16 @@ public abstract class BlackjackPlayer {
     protected final Blackjack game;
     //protected final LinkedList<Card> cards;
     protected LinkedList<Hand> hands;
-    protected int score;
+//    protected int score;
     protected boolean retired;
-    protected State state;
+//    protected State state;
 
     private String name;
 
     BlackjackPlayer(Blackjack game, String name) {
         this.game = game;
         this.name = name.toLowerCase(Locale.ROOT);
-        this.score = 0;
+//        this.score = 0;
         this.retired = false;
         //this.cards = new LinkedList<>();
         this.hands = new LinkedList<>();
@@ -27,7 +26,7 @@ public abstract class BlackjackPlayer {
         this.hands.forEach(hand ->  hand.setState(State.SETUP));
     }
 
-    public abstract void takeTurn();
+//    public abstract void takeTurn();
 
 //    public abstract void dealStart();
 
@@ -103,25 +102,12 @@ public abstract class BlackjackPlayer {
 //        return this.score;
 //    }
 
-    @Deprecated
-    public int getScore() {
-        return score;
-    }
-
     public boolean isRetired() {
         return retired;
     }
 
     public void setRetired(boolean retired) {
         this.retired = retired;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
     }
 
     public String getName() {
@@ -164,7 +150,7 @@ public abstract class BlackjackPlayer {
             cards.getLast().flipCard();
         }
 
-        private void printCardStatus() {
+        protected void printCardStatus() {
             System.out.println(BlackjackPlayer.this.getName() + " hand #" + index);
             getCards().forEach(System.out::println);
         }

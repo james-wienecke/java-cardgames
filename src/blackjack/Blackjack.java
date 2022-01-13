@@ -64,11 +64,15 @@ public class Blackjack {
 
     public void gameStart() {
         dealer.initialDeal();
+        round++;
 
         for (BlackjackPlayer player : players) {
             // serve players
+            player.hands.forEach(hand -> hand.setState(State.READY));
             dealer.servePlayer(player);
         }
+
+        dealer.
 
 //        // draw 2 cards, one facedown
 //        this.dealer.drawCard();

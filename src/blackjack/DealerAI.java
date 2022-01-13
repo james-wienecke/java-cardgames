@@ -64,8 +64,6 @@ public class DealerAI extends BlackjackPlayer {
             player.addCardToHand(drawCard(true));
             player.updateScore();
         });
-        // round 0 is over, now it is round 1
-        game.incrementRound();
     }
 
     public void dealRound() {
@@ -94,5 +92,9 @@ public class DealerAI extends BlackjackPlayer {
                 }
             }
         }
+    }
+
+    public void flipHoleCard() {
+        this.hands.get(0)
     }
 }
