@@ -57,6 +57,9 @@ public abstract class BlackjackPlayer {
         }
         this.printCardStatus();
         System.out.println(this.getName() + " score: " + this.calcScore(true));
+        if (this.state == State.BLACKJACK || this.state == State.BUST) {
+            System.out.println(this.getName() + " " + this.state);
+        }
     }
 
 
@@ -70,11 +73,8 @@ public abstract class BlackjackPlayer {
     }
 
     public int calcScore(boolean faceUpOnly) {
-        //Card card = this.cards.getLast();
         for (Card card : this.cards) {
-            if (card.isAlreadyScored()) {
-                // skip scoring for card
-            } else {
+            if (!card.isAlreadyScored()) {
                 if (faceUpOnly) {
                     this.score = (card.isFaceUp()) ? card.getValue(this.score) : this.score;
                 } else {
@@ -82,15 +82,12 @@ public abstract class BlackjackPlayer {
                 }
             }
         }
-        //System.out.println(this.name + " score: " + this.score);
         if (this.score > 21) {
             this.state = State.BUST;
             this.retired = true;
-            //System.out.println(this.name + " BUSTS!");
         } else if (this.score == 21) {
             this.state = State.BLACKJACK;
             this.retired = true;
-            //System.out.println(this.name + " BLACKJACK!");
         }
         return this.score;
     }

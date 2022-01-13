@@ -72,6 +72,9 @@ public class Blackjack {
 
     public void gameLoop() {
         do {
+            if (allPlayers.stream().anyMatch(p -> p.getState() == State.BLACKJACK)) {
+                break;
+            }
             for (BlackjackPlayer player : players) {
                 player.takeTurn();
             }
@@ -96,22 +99,10 @@ public class Blackjack {
         });
     }
 
-//    public boolean scoreThresholdReached(int scoreThreshold) {
-//        boolean reached = false;
-//        if (dealer.calcScore(true) >= 21) {
-//            reached = true;
-//        }
-//        for (BlackjackPlayer player : players) {
-//            if (player.calcScore(true) >= 21) {
-//                reached = true;
-//            }
-//        }
-//
-//        return reached;
-//    }
-public boolean scoreThresholdReached(int scoreThreshold) {
-    return allPlayers.stream().anyMatch(player -> player.getScore() > scoreThreshold);
-}
+
+    public boolean scoreThresholdReached(int scoreThreshold) {
+        return allPlayers.stream().anyMatch(player -> player.getScore() > scoreThreshold);
+    }
 
     public boolean scoreThresholdReached() {
         return scoreThresholdReached(21);
@@ -130,13 +121,17 @@ public boolean scoreThresholdReached(int scoreThreshold) {
                 // dealer loses, all players win
                 winners.addAll(players);
                 break;
-            case STAND:
+            default:
                 // check which players are higher or lower than dealer's score
                 players.forEach(player -> {
-                    if (player.getScore() > dealer.getScore()) {
-                        winners.add(player);
-                    } else {
+                    if (player.getState() == State.BUST) {
                         losers.add(player);
+                    } else {
+                        if (player.getScore() > dealer.getScore()) {
+                            winners.add(player);
+                        } else {
+                            losers.add(player);
+                        }
                     }
                 });
         }
