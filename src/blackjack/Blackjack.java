@@ -8,8 +8,9 @@ import java.util.ArrayList;
 public class Blackjack {
     private boolean gameWon;
     private boolean gameOver;
+    private int round;
     private Deck deck;
-    private BlackjackPlayer dealer;
+    private DealerAI dealer;
     private ArrayList<BlackjackPlayer> players;
     private ArrayList<BlackjackPlayer> allPlayers;
 
@@ -17,6 +18,7 @@ public class Blackjack {
     public Blackjack() {
         this.gameWon = false;
         this.gameOver = false;
+        this.round = 0;
         this.deck = new Deck();
         this.deck.shuffle();
         this.players = new ArrayList<>();
@@ -43,31 +45,54 @@ public class Blackjack {
         return this.deck.draw();
     }
 
+    public Card drawCard(boolean faceUp) {
+        return deck.draw(faceUp);
+    }
+
     public void play() {
         this.gameStart();
         this.gameLoop();
     }
 
+    public void incrementRound() {
+        round++;
+    }
+
+    public int getRound() {
+        return round;
+    }
+
     public void gameStart() {
-        // draw 2 cards, one facedown
-        this.dealer.drawCard();
-        this.dealer.drawCard(false);
+        dealer.initialDeal();
+        round++;
 
-        drawCardsForPlayers();
+        for (BlackjackPlayer player : players) {
+            // serve players
+            player.hands.forEach(hand -> hand.setState(State.READY));
+            dealer.servePlayer(player);
+        }
 
-        this.allPlayers.forEach(player -> {
-            player.printCardStatus();
-            System.out.println(player.getName() + " score: " + player.calcScore(true));
-        });
+        dealer.
 
-        drawCardsForPlayers();
-
-        this.dealer.flipLastCard();
-
-        this.allPlayers.forEach(player -> {
-            player.printCardStatus();
-            System.out.println(player.getName() + " score: " + player.calcScore(true));
-        });
+//        // draw 2 cards, one facedown
+//        this.dealer.drawCard();
+//        this.dealer.drawCard();
+//
+//        drawCardsForPlayers();
+//
+//        this.allPlayers.forEach(player -> {
+//            player.printCardStatus();
+//            System.out.println(player.getName() + " score: " + player.calcScore(true));
+//        });
+//
+//        drawCardsForPlayers();
+//
+//        this.dealer.flipLastCard();
+//
+//        this.allPlayers.forEach(player -> {
+//            player.printCardStatus();
+//            System.out.println(player.getName() + " score: " + player.calcScore(true));
+//        });
     }
 
     public void gameLoop() {
@@ -95,7 +120,7 @@ public class Blackjack {
     private void printCardStatus() {
         allPlayers.forEach(player -> {
             System.out.println(player.getName());
-            player.getCards().forEach(System.out::println);
+            //player.getCards().forEach(System.out::println);
         });
     }
 
@@ -166,7 +191,7 @@ public class Blackjack {
         }
     }
 
-    public void addDealer(BlackjackPlayer dealer) {
+    public void addDealer(DealerAI dealer) {
         this.dealer = dealer;
         this.allPlayers.add(dealer);
     }
@@ -174,5 +199,9 @@ public class Blackjack {
     public void addPlayer(BlackjackPlayer player) {
         this.players.add(player);
         this.allPlayers.add(player);
+    }
+
+    public ArrayList<BlackjackPlayer> getPlayers() {
+        return this.players;
     }
 }
